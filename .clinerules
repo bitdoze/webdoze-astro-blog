@@ -1,0 +1,43 @@
+# Webdoze Astro Blog - Project Rules
+
+## Save rule
+- save a summary of the changes made in a file in root called changes.md
+
+
+## Project Structure
+- Keep components in src/components organized by purpose
+- Store blog posts in src/content/posts
+- Use src/layouts for page layouts
+- Keep utility functions in src/utils
+
+## Component Guidelines
+- Create small, reusable components
+- Each component should have a single responsibility
+- Use props for component configuration
+
+
+## Styling Guidelines
+- Use TailwindCSS v4 classes directly in components
+- Use DaisyUI components for common UI elements
+- Avoid custom CSS when possible
+- For complex styling needs, use CSS modules
+- use astro-icon and mdi for icons that are needed
+
+## Code Simplicity Rules
+- Prefer readability over clever code
+- Keep component files under 300 lines
+- Use descriptive variable and function names
+- Add comments for complex logic
+
+## Config Guidelines
+- use src/config/menu.json for the header menu items
+-  use src/config/social.json for the social   media links
+-  use src/config/config.json for other config that are needed
+
+
+## blog structure
+
+- /src/assets/images have the images 
+- /src/content/posts have the markdown posts
+- /src/content/authors have the markdown authors
+- /src/content/pages have the markdown pages
