@@ -1,10 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../../layouts/Layout.astro';
-import PostCard from '../../../components/blog/PostCard.astro';
-import Pagination from '../../../components/common/Pagination.astro';
-import { getPagination } from '../../../utils/pagination';
-import { siteConfig } from '../../../config/site';
+import Layout from '@layouts/Layout.astro';
+import PostCard from '@components/blog/PostCard.astro';
+import Pagination from '@components/common/Pagination.astro';
+import { getPagination } from '@utils/pagination';
+import { siteConfig } from '@config/site';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => {

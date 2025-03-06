@@ -1,10 +1,12 @@
 ---
 import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
-import Layout from './Layout.astro';
-import { formatDate } from '../utils/date';
+import Layout from '@layouts/Layout.astro';
+import { formatDate } from '@utils/date';
+import PostHeadings from '@layouts/components/table-of-contents/PostHeadings.astro';
+import RelatedPosts from '@layouts/components/blog/RelatedPosts.astro';
 
-const { post } = Astro.props;
+const { post, headings } = Astro.props;
 const { title, description, image, date, categories, authors, tags } = post.data;
 ---
 
@@ -96,9 +98,18 @@ const { title, description, image, date, categories, authors, tags } = post.data
       )}
     </header>
     
+    <!-- Table of Contents -->
+    <div class="mb-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+      <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Table of Contents</h2>
+      <PostHeadings headings={headings} />
+    </div>
+    
     <!-- Post Content -->
     <div class="prose prose-lg dark:prose-invert max-w-none prose-blue prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-lg">
       <slot />
     </div>
+    
+    <!-- Related Posts -->
+    <RelatedPosts currentPost={post} />
   </article>
 </Layout>
