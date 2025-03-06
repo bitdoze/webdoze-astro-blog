@@ -1,0 +1,183 @@
+---
+import ThemeToggle from "./ThemeToggle.astro";
+import { Image } from "astro:assets";
+import menu from "../../config/menu.json";
+
+// Extract main menu items
+const mainMenu = menu.main;
+---
+
+<header class="sticky top-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm w-full">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <a href="/" class="text-blue-600 dark:text-blue-400 font-bold text-xl">
+          BitDoze
+        </a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="flex md:hidden">
+        <button 
+          type="button" 
+          id="mobile-menu-button"
+          class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white p-2 rounded-md"
+          aria-controls="mobile-menu" 
+          aria-expanded="false"
+        >
+          <span class="sr-only">Open main menu</span>
+          <!-- Icon when menu is closed -->
+          <svg 
+            id="menu-closed-icon"
+            class="block h-6 w-6" 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor" 
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <!-- Icon when menu is open -->
+          <svg 
+            id="menu-open-icon"
+            class="hidden h-6 w-6" 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor" 
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Desktop menu -->
+      <nav class="hidden md:flex space-x-4 items-center">
+        {
+          mainMenu.map((item) => (
+            <>
+              {item.hasChildren ? (
+                <div class="relative group">
+                  <button class="flex items-center text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium">
+                    {item.name}
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      class="ml-1 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hidden group-hover:block transition-all duration-300 opacity-0 group-hover:opacity-100">
+                    <div class="py-1 rounded-md">
+                      {item.children.map((child) => (
+                        <a
+                          href={child.url}
+                          class="block px-4 py-2 text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                          {child.name}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <a
+                  href={item.url}
+                  class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  {item.name}
+                </a>
+              )}
+            </>
+          ))
+        }
+        <ThemeToggle />
+      </nav>
+    </div>
+  </div>
+
+  <!-- Mobile menu, show/hide based on menu state -->
+  <div class="hidden md:hidden" id="mobile-menu">
+    <div class="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+      {
+        mainMenu.map((item) => (
+          <>
+            {item.hasChildren ? (
+              <div class="mobile-dropdown">
+                <button class="mobile-dropdown-button w-full text-left flex justify-between items-center text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 px-3 py-2 rounded-md text-base font-medium">
+                  {item.name}
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    class="mobile-dropdown-icon h-4 w-4 transition-transform duration-200" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="mobile-dropdown-content hidden pl-4 py-2 space-y-1">
+                  {item.children.map((child) => (
+                    <a
+                      href={child.url}
+                      class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      {child.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <a
+                href={item.url}
+                class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+              >
+                {item.name}
+              </a>
+            )}
+          </>
+        ))
+      }
+      <div class="px-3 py-3 flex justify-center">
+        <ThemeToggle />
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Mobile menu toggle
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuClosedIcon = document.getElementById('menu-closed-icon');
+  const menuOpenIcon = document.getElementById('menu-open-icon');
+
+  if (mobileMenuButton && mobileMenu && menuClosedIcon && menuOpenIcon) {
+    mobileMenuButton.addEventListener('click', () => {
+      const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+      mobileMenuButton.setAttribute('aria-expanded', !expanded);
+      mobileMenu.classList.toggle('hidden');
+      menuClosedIcon.classList.toggle('hidden');
+      menuOpenIcon.classList.toggle('hidden');
+    });
+  }
+
+  // Mobile dropdowns
+  const mobileDropdownButtons = document.querySelectorAll('.mobile-dropdown-button');
+  
+  mobileDropdownButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('.mobile-dropdown-icon');
+      
+      content.classList.toggle('hidden');
+      icon.classList.toggle('rotate-180');
+    });
+  });
+</script>

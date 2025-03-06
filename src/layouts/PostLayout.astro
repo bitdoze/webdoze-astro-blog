@@ -1,0 +1,104 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import Layout from './Layout.astro';
+import { formatDate } from '../utils/date';
+
+const { post } = Astro.props;
+const { title, description, image, date, categories, authors, tags } = post.data;
+---
+
+<Layout>
+  <article class="w-full py-8">
+    <!-- Post Header -->
+    <header class="mb-8">
+      <div class="flex flex-wrap items-center text-gray-500 dark:text-gray-400 mb-4 gap-4">
+        <!-- Date -->
+        <div class="flex items-center">
+          <Icon name="mdi:calendar" class="w-5 h-5 mr-1" />
+          <time datetime={date?.toISOString()}>
+            {date ? formatDate(date) : ''}
+          </time>
+        </div>
+        
+        <!-- Categories -->
+        {categories && categories.length > 0 && (
+          <div class="flex items-center">
+            <Icon name="mdi:folder" class="w-5 h-5 mr-1" />
+            <div class="flex flex-wrap gap-2">
+              {categories.map((category: string) => (
+                <a 
+                  href={`/categories/${category.toLowerCase()}/`} 
+                  class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
+                >
+                  {category}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        <!-- Author -->
+        {authors && authors.length > 0 && (
+          <div class="flex items-center">
+            <Icon name="mdi:account" class="w-5 h-5 mr-1" />
+            <div class="flex flex-wrap gap-2">
+              {authors.map((author: string) => (
+                <a 
+                  href={`/authors/${author.toLowerCase()}/`} 
+                  class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
+                >
+                  {author}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+      
+      <!-- Title -->
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        {title}
+      </h1>
+      
+      <!-- Description -->
+      {description && (
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
+          {description}
+        </p>
+      )}
+      
+      <!-- Featured Image -->
+      {image && (
+        <div class="rounded-lg overflow-hidden mb-8 aspect-video">
+          <Image 
+            src={image} 
+            alt={title} 
+            class="w-full h-full object-cover"
+            width={1280}
+            height={720}
+          />
+        </div>
+      )}
+      
+      <!-- Tags -->
+      {tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-6">
+          {tags.map((tag: string) => (
+            <a 
+              href={`/tags/${tag.toLowerCase()}/`} 
+              class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors duration-300"
+            >
+              #{tag}
+            </a>
+          ))}
+        </div>
+      )}
+    </header>
+    
+    <!-- Post Content -->
+    <div class="prose prose-lg dark:prose-invert max-w-none prose-blue prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-lg">
+      <slot />
+    </div>
+  </article>
+</Layout>
