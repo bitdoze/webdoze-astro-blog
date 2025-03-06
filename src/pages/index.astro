@@ -1,5 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
+import Hero from '@components/widgets/Hero.astro';
+import Tools from '@components/widgets/Tools.astro'; 
 import Layout from '@layouts/Layout.astro';
 import PostCard from '@components/blog/PostCard.astro';
 import { siteConfig } from '@config/site';
@@ -25,30 +27,8 @@ const latestPosts = sortedPosts.slice(0, 6);
 >
   <main class="w-full py-8">
     <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-900 py-16 mb-12 rounded-lg">
-      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-          {siteConfig.name}
-        </h1>
-        <p class="text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-          {siteConfig.description}
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a 
-            href="/blog/" 
-            class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors duration-300 font-medium"
-          >
-            Read the Blog
-          </a>
-          <a 
-            href="/categories/" 
-            class="px-6 py-3 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white border border-gray-300 dark:border-gray-700 rounded-md transition-colors duration-300 font-medium"
-          >
-            Browse Categories
-          </a>
-        </div>
-      </div>
-    </section>
+ <Hero /> 
+  <Tools />
     
     <!-- Blog Posts Section -->
     <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">

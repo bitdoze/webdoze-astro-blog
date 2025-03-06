@@ -29,24 +29,24 @@ const tools = [
 ];
 ---
 
-<section class="py-8 bg-gray-50">
+<section class="py-8 bg-gray-50 dark:bg-gray-800 rounded-lg">
   <div class="max-w-6xl mx-auto px-4 sm:px-6">
     <div class="text-center mb-6">
-      <h2 class="text-2xl font-bold text-gray-900 mb-2">AI Tools</h2>
-      <p class="text-sm text-gray-600">Enhance your content creation with our AI-powered tools</p>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">AI Tools</h2>
+      <p class="text-sm text-gray-600 dark:text-gray-300">Enhance your content creation with our AI-powered tools</p>
     </div>
     
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
       {tools.map(tool => (
         <a href={tool.url} class="group">
-          <div class="bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform group-hover:-translate-y-1">
+          <div class="bg-white dark:bg-gray-700 p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform group-hover:-translate-y-1">
             <div class="flex items-center mb-2">
-              <div class="p-2 rounded-lg bg-indigo-50 group-hover:bg-indigo-100 transition-colors duration-300">
-                <Icon name={tool.icon} class="w-4 h-4 text-indigo-600" />
+              <div class="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-800/40 transition-colors duration-300">
+                <Icon name={tool.icon} class="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
               </div>
-              <h3 class="ml-2 text-sm font-semibold text-gray-900">{tool.title}</h3>
+              <h3 class="ml-2 text-sm font-semibold text-gray-900 dark:text-white">{tool.title}</h3>
             </div>
-            <p class="text-xs text-gray-600 group-hover:text-gray-700 transition-colors duration-300 line-clamp-2">
+            <p class="text-xs text-gray-600 dark:text-gray-300 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors duration-300 line-clamp-2">
               {tool.description}
             </p>
           </div>
