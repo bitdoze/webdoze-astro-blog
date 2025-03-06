@@ -73,12 +73,12 @@ function shuffleArray(array) {
 const relatedPosts = getRelatedPosts(currentPost, otherPosts, limit);
 ---
 
-<section class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+<section class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700" transition:animate="fade">
   <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Posts</h2>
   
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     {relatedPosts.map((post) => (
-      <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+      <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300" transition:animate="slide">
         <a href={`/${post.slug}/`} class="block">
           {post.data.image && (
             <div class="aspect-video overflow-hidden">
@@ -88,6 +88,7 @@ const relatedPosts = getRelatedPosts(currentPost, otherPosts, limit);
                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 width={400}
                 height={225}
+                transition:name={`post-image-${post.id || post.slug}`}
               />
             </div>
           )}
@@ -97,7 +98,7 @@ const relatedPosts = getRelatedPosts(currentPost, otherPosts, limit);
               {post.data.date && formatDate(post.data.date)}
             </div>
             
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2" transition:name={`post-title-${post.id || post.slug}`}>
               {post.data.title}
             </h3>
             

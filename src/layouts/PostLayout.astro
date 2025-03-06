@@ -5,13 +5,29 @@ import Layout from '@layouts/Layout.astro';
 import { formatDate } from '@utils/date';
 import PostHeadings from '@layouts/components/table-of-contents/PostHeadings.astro';
 import RelatedPosts from '@layouts/components/blog/RelatedPosts.astro';
+import SocialShare from '@layouts/components/blog/SocialShare.astro';
 
 const { post, headings } = Astro.props;
 const { title, description, image, date, categories, authors, tags } = post.data;
+
+// Get the canonical URL for this post
+// Make sure we have a valid site URL to avoid the TypeError: Invalid URL error
+const canonicalURL = Astro.site 
+  ? new URL(Astro.url.pathname, Astro.site).toString()
+  : Astro.url.pathname;
 ---
 
-<Layout>
-  <article class="w-full py-8">
+<Layout
+  title={title}
+  description={description}
+  image={image?.src || undefined}
+  article={true}
+  canonical={canonicalURL}
+  publishDate={date}
+  author={authors && authors.length > 0 ? { name: authors[0] } : undefined}
+  tags={tags}
+  categories={categories}>
+  <article class="w-full py-8" transition:animate="fade">
     <!-- Post Header -->
     <header class="mb-8">
       <div class="flex flex-wrap items-center text-gray-500 dark:text-gray-400 mb-4 gap-4">
@@ -59,7 +75,7 @@ const { title, description, image, date, categories, authors, tags } = post.data
       </div>
       
       <!-- Title -->
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4" transition:name={`post-title-${post.id || post.slug}`}>
         {title}
       </h1>
       
@@ -79,6 +95,7 @@ const { title, description, image, date, categories, authors, tags } = post.data
             class="w-full h-full object-cover"
             width={1280}
             height={720}
+            transition:name={`post-image-${post.id || post.slug}`}
           />
         </div>
       )}
@@ -108,6 +125,13 @@ const { title, description, image, date, categories, authors, tags } = post.data
     <div class="prose prose-lg dark:prose-invert max-w-none prose-blue prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-lg">
       <slot />
     </div>
+    
+    <!-- Social Share Component -->
+    <SocialShare
+      title={title}
+      description={description}
+      url={canonicalURL}
+    />
     
     <!-- Related Posts -->
     <RelatedPosts currentPost={post} />
