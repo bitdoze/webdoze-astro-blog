@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import PostLayout from '@layouts/PostLayout.astro';
+// Import all widget components for MDX files
+import * as MarkdownComponents from '@layouts/components/MarkdownComponents.astro';
 
 // Get all blog posts
 export async function getStaticPaths() {
@@ -20,9 +22,13 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+// Pass all widget components to MDX content
 const { Content, headings } = await post.render();
+
+// Make all components available to MDX content
+const components = MarkdownComponents;
 ---
 
 <PostLayout post={post} headings={headings}>
-  <Content />
+  <Content components={components} />
 </PostLayout>

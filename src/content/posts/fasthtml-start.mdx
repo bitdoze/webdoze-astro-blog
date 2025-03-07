@@ -9,8 +9,27 @@ tags: ["fasthtml"]
 canonical: "https://www.bitdoze.com/fasthtml-start/"
 ---
 
-import YouTubeEmbed from "../../layouts/components/widgets/YouTubeEmbed.astro";
 
+
+<Button variant="solid" label="With External Link" url="https://astro.build" />
+
+<Accordion label="Example Accordion Label" group="accordion-01" expanded="true">
+  Content goes here...
+</Accordion>
+
+<Tabs>
+  <Tab name="Overview">Tab content here...</Tab>
+  <Tab name="Details">More content here...</Tab>
+</Tabs>
+
+<Notice type="info" title="Information">
+  This is an informational notice.
+</Notice>
+
+<ListCheck>
+  - Item one
+  - Item two
+</ListCheck>
 
 [FastHTML](https://fastht.ml/) is an innovative Python-based web framework designed to make web development accessible and enjoyable for beginners while providing robust tools for seasoned developers. By blending Python's simplicity with HTML-like syntax, FastHTML allows you to create dynamic and responsive web applications without wrestling with complex setups or unfamiliar languages.
 
