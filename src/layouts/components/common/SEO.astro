@@ -74,7 +74,7 @@ const safeUrl = (path, base) => {
     return new URL(path, base).toString();
   } catch (e) {
     // Fallback to concatenating the URL
-    const baseUrl = base || siteConfig.url || 'https://bitdoze.com';
+    const baseUrl = base || siteConfig.url || '';
     return `${baseUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
   }
 };
@@ -162,7 +162,7 @@ try {
   canonicalURL = new URL(canonical, Astro.site || siteConfig.url).toString();
 } catch (e) {
   // Fallback to a simple concatenation if URL constructor fails
-  const baseUrl = (Astro.site || siteConfig.url || 'https://bitdoze.com').replace(/\/$/, '');
+  const baseUrl = (Astro.site || siteConfig.url || '').replace(/\/$/, '');
   canonicalURL = `${baseUrl}/${canonical.replace(/^\//, '')}`;
 }
 ---
@@ -181,7 +181,7 @@ try {
   try {
     return new URL(image, Astro.site || siteConfig.url).toString();
   } catch (e) {
-    const baseUrl = (Astro.site || siteConfig.url || 'https://bitdoze.com').replace(/\/$/, '');
+    const baseUrl = (Astro.site || siteConfig.url || '').replace(/\/$/, '');
     return `${baseUrl}/${image.replace(/^\//, '')}`;
   }
 })()} />

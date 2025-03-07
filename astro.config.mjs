@@ -5,6 +5,8 @@ import cloudflare from '@astrojs/cloudflare';
 import mdx from '@astrojs/mdx';
 import icon from 'astro-icon';
 
+import sitemap from '@astrojs/sitemap';
+
 // https://astro.build/config
 export default defineConfig({
   // Set the site URL for production
@@ -23,5 +25,5 @@ export default defineConfig({
   },
   
   // Configure Astro integrations
-  integrations: [mdx(), icon()]
+  integrations: [mdx(), icon(), sitemap()]
 });

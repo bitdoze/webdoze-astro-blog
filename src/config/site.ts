@@ -10,7 +10,7 @@ export const siteConfig = {
   
   // SEO settings
   noindex: {
-    tags: false, // Set to true to add noindex meta tag to tag pages
+    tags: true, // Set to true to add noindex meta tag to tag pages
     categories: false, // Set to true to add noindex meta tag to category pages
     authors: false, // Set to true to add noindex meta tag to author pages
   },
