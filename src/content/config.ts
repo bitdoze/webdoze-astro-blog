@@ -13,6 +13,7 @@ const postsCollection = defineCollection({
       authors: z.array(z.string()).default(["admin"]),
       categories: z.array(z.string()).default(["others"]),
       tags: z.array(z.string()).default(["others"]),
+      series: z.tuple([z.string(), z.string()]).optional(),
       canonical: z.string().optional(),
       draft: z.boolean().optional(),
     }),

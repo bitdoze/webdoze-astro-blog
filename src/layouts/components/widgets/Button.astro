@@ -1,19 +1,30 @@
 ---
 export interface Props {
-	label: string;
-	url: string;
+	// New prop names
+	text?: string;
+	link?: string;
+	// Legacy prop names (for backward compatibility)
+	label?: string;
+	url?: string;
 	variant?: 'solid' | 'outline';
 	color?: 'blue' | 'green' | 'red' | 'purple' | 'gray';
 	external?: boolean;
 }
 
 const { 
+	// Use new prop names with fallback to legacy props
+	text, 
+	link, 
 	label, 
 	url, 
 	variant = 'solid', 
 	color = 'blue',
 	external = false 
 } = Astro.props;
+
+// Use new props if available, otherwise fall back to legacy props
+const buttonText = text || label || '';
+const buttonLink = link || url || '#';
 
 const colorClasses = {
 	blue: {
@@ -43,8 +54,8 @@ const buttonClasses = `not-prose inline-flex items-center justify-center px-4 py
 
 <a
 	class={buttonClasses}
-	href={url}
+	href={buttonLink}
 	{...external ? { target: "_blank", rel: "noopener noreferrer" } : {}}
 >
-	{label}
+	{buttonText}
 </a>

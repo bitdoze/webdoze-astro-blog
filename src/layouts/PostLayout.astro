@@ -6,6 +6,7 @@ import { formatDate } from '@utils/date';
 import PostHeadings from '@layouts/components/table-of-contents/PostHeadings.astro';
 import RelatedPosts from '@layouts/components/blog/RelatedPosts.astro';
 import SocialShare from '@layouts/components/blog/SocialShare.astro';
+import SeriesNav from '@layouts/components/widgets/SeriesNav.astro';
 
 const { post, headings } = Astro.props;
 const { title, description, image, date, categories, authors, tags } = post.data;
@@ -114,6 +115,15 @@ const canonicalURL = Astro.site
         </div>
       )}
     </header>
+    
+    <!-- Series Navigation (if part of a series) -->
+    {post.data.series && Array.isArray(post.data.series) && post.data.series.length === 2 && (
+      <SeriesNav 
+        currentSlug={post.slug} 
+        seriesName={post.data.series[0]} 
+        seriesPosition={post.data.series[1]} 
+      />
+    )}
     
     <!-- Table of Contents -->
     <div class="mb-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">

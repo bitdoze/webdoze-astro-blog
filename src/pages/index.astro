@@ -4,6 +4,7 @@ import Hero from '@components/widgets/Hero.astro';
 import Tools from '@components/widgets/Tools.astro'; 
 import Layout from '@layouts/Layout.astro';
 import PostCard from '@components/blog/PostCard.astro';
+import PopularTopics from '@components/blog/PopularTopics.astro';
 import { siteConfig } from '@config/site';
 
 // Get all blog posts and sort by date (newest first)
@@ -27,8 +28,11 @@ const latestPosts = sortedPosts.slice(0, 6);
 >
   <main class="w-full py-8">
     <!-- Hero Section -->
- <Hero /> 
-  <Tools />
+    <Hero /> 
+    <Tools />
+    
+    <!-- Popular Topics Section -->
+    <PopularTopics tags={["docker", "astro", "carrd"]} postsPerTag={5} />
     
     <!-- Blog Posts Section -->
     <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
