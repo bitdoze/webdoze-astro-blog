@@ -16,6 +16,17 @@ export interface Props {
   };
   tags?: string[];
   categories?: string[];
+  // For breadcrumbs
+  breadcrumbs?: Array<{name: string; url: string}>;
+  // For video content
+  video?: {
+    src: string;
+    name?: string;
+    description?: string;
+    thumbnailUrl?: string;
+    uploadDate?: Date;
+    duration?: string; // ISO 8601 format
+  };
 }
 
 const {
@@ -57,6 +68,17 @@ const modifiedISODate = modifiedDate ? new Date(modifiedDate).toISOString() : pu
 // Prepare schema.org JSON-LD
 let schema = null;
 
+// Safe URL creation function
+const safeUrl = (path, base) => {
+  try {
+    return new URL(path, base).toString();
+  } catch (e) {
+    // Fallback to concatenating the URL
+    const baseUrl = base || siteConfig.url || 'https://bitdoze.com';
+    return `${baseUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
+  }
+};
+
 // Website schema
 const websiteSchema = {
   "@context": "https://schema.org",
@@ -74,19 +96,33 @@ const websiteSchema = {
   }
 };
 
+// BreadcrumbList schema
+const breadcrumbsSchema = Astro.props.breadcrumbs ? {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": Astro.props.breadcrumbs.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.name,
+    "item": safeUrl(item.url, Astro.site || siteConfig.url)
+  }))
+} : null;
+
+// VideoObject schema for pages with embedded videos
+const videoSchema = Astro.props.video ? {
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": Astro.props.video.name || title,
+  "description": Astro.props.video.description || description,
+  "thumbnailUrl": Astro.props.video.thumbnailUrl || image,
+  "uploadDate": Astro.props.video.uploadDate ? new Date(Astro.props.video.uploadDate).toISOString() : publishISODate,
+  "duration": Astro.props.video.duration || "PT0M0S",
+  "contentUrl": Astro.props.video.src,
+  "embedUrl": Astro.props.video.src
+} : null;
+
 // Article schema (for blog posts)
 if (article && publishISODate) {
-  // Safe URL creation function
-  const safeUrl = (path, base) => {
-    try {
-      return new URL(path, base).toString();
-    } catch (e) {
-      // Fallback to concatenating the URL
-      const baseUrl = base || siteConfig.url || 'https://bitdoze.com';
-      return `${baseUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
-    }
-  };
-
   schema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -114,6 +150,8 @@ if (article && publishISODate) {
     },
     "keywords": tags?.join(", ") || ""
   };
+} else if (Astro.props.video) {
+  schema = videoSchema;
 } else {
   schema = websiteSchema;
 }
@@ -186,3 +224,13 @@ try {
 
 <!-- Schema.org JSON-LD -->
 <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+<!-- BreadcrumbList Schema (if breadcrumbs are provided) -->
+{breadcrumbsSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} />
+)}
+
+<!-- VideoObject Schema (if video is provided) -->
+{videoSchema && article && (
+  <script type="application/ld+json" set:html={JSON.stringify(videoSchema)} />
+)}

@@ -3,10 +3,12 @@ import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import Layout from '@layouts/Layout.astro';
 import { formatDate } from '@utils/date';
+import { getReadingTime } from '@utils/readingTime';
 import PostHeadings from '@layouts/components/table-of-contents/PostHeadings.astro';
 import RelatedPosts from '@layouts/components/blog/RelatedPosts.astro';
 import SocialShare from '@layouts/components/blog/SocialShare.astro';
 import SeriesNav from '@layouts/components/widgets/SeriesNav.astro';
+import ReadingProgress from '@layouts/components/blog/ReadingProgress.astro';
 
 const { post, headings } = Astro.props;
 const { title, description, image, date, categories, authors, tags } = post.data;
@@ -16,6 +18,30 @@ const { title, description, image, date, categories, authors, tags } = post.data
 const canonicalURL = Astro.site 
   ? new URL(Astro.url.pathname, Astro.site).toString()
   : Astro.url.pathname;
+
+// Calculate reading time based on the post content
+let readingTime = { text: '3 min', minutes: 3, time: 180000, words: 600 };
+
+try {
+  // Get the raw content from the post
+  const rawContent = post.body;
+  readingTime = getReadingTime(rawContent);
+} catch (error) {
+  console.error('Error calculating reading time:', error);
+  // Fallback to default reading time if calculation fails
+}
+
+// Generate breadcrumbs for structured data
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Blog', url: '/blog/' }
+];
+
+if (categories && categories.length > 0) {
+  breadcrumbs.push({ name: categories[0], url: `/categories/${categories[0].toLowerCase()}/` });
+}
+
+breadcrumbs.push({ name: title, url: canonicalURL });
 ---
 
 <Layout
@@ -27,8 +53,12 @@ const canonicalURL = Astro.site
   publishDate={date}
   author={authors && authors.length > 0 ? { name: authors[0] } : undefined}
   tags={tags}
-  categories={categories}>
-  <article class="w-full py-8" transition:animate="fade">
+  categories={categories}
+  breadcrumbs={breadcrumbs}>
+  <!-- Reading Progress Bar -->
+<ReadingProgress />
+
+<article class="w-full py-8" transition:animate="fade">
     <!-- Post Header -->
     <header class="mb-8">
       <div class="flex flex-wrap items-center text-gray-500 dark:text-gray-400 mb-4 gap-4">
@@ -38,6 +68,12 @@ const canonicalURL = Astro.site
           <time datetime={date?.toISOString()}>
             {date ? formatDate(date) : ''}
           </time>
+        </div>
+        
+        <!-- Reading Time -->
+        <div class="flex items-center">
+          <Icon name="mdi:clock-outline" class="w-5 h-5 mr-1" />
+          <span>{readingTime.text} read</span>
         </div>
         
         <!-- Categories -->
